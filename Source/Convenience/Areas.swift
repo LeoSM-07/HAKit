@@ -2,12 +2,12 @@ public extension HATypedRequest {
     /// Retrieve a list of the user's areas
     ///
     /// - Returns: A typed request that can be sent via `HAConnection`
-    static func getAreas() -> HATypedRequest<[Area]> {
+    static func getAreas() -> HATypedRequest<[HAArea]> {
         .init(request: .init(type: .getAreas, data: [:]))
     }
 }
 
-public struct Area: HADataDecodable {
+public struct HAArea: HADataDecodable {
     /// The id of the area, as in homeassistant
     public var id: String
     /// The friendly name of the area
