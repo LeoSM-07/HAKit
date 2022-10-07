@@ -79,6 +79,11 @@ internal class ScriptConfigTests: XCTestCase {
         XCTAssertEqual(result.variables?.count, 1)
         XCTAssertEqual(result.mode, .restart)
         XCTAssertEqual(result.sequence.count, 4)
+        
+        let sequence1 = try result.sequence.get(throwing: 0)
+        let sequence2 = try result.sequence.get(throwing: 1)
+        XCTAssertEqual(sequence1.count, 2)
+        XCTAssertEqual(sequence2.count, 4)
     }
 
     func testResponseWithMinimalValues() throws {

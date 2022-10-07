@@ -44,7 +44,7 @@ public struct HAScriptSubConfig: HADataDecodable {
     /// When `max` is exceeded (which is effectively 1 for `single` mode) a log message will be emitted to indicate this has happened
     public var maxExceeded: String?
     /// The sequence of actions to be performed in the script
-    public var sequence: NSArray
+    public var sequence: [[String: Any]]
     
     /// Controls what happens when script is invoked while it is still running from one or more previous invocations
     public enum Mode: String, HADecodeTransformable {
@@ -84,7 +84,7 @@ public struct HAScriptSubConfig: HADataDecodable {
     ///   - max: Controls maximum number of runs executing and/or queued up to run at a time. Only valid with modes `queued` and `parallel`
     ///   - maxExceeded: When `max` is exceeded (which is effectively 1 for `single` mode) a log message will be emitted to indicate this has happened
     ///   - sequence: The sequence of actions to be performed in the script
-    public init(alias: String?, icon: String?, description: String?, variables: [String: Any]?, mode: Mode?, max: Int?, maxExceeded: String?, sequence: NSArray) {
+    public init(alias: String?, icon: String?, description: String?, variables: [String: Any]?, mode: Mode?, max: Int?, maxExceeded: String?, sequence: [[String: Any]]) {
         self.alias = alias
         self.icon = icon
         self.description = description
