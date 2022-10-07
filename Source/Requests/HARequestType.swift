@@ -21,8 +21,10 @@ public struct HARequestType: RawRepresentable, Hashable, ExpressibleByStringLite
     public static var getConfig: Self = "get_config"
     /// `get_services`
     public static var getServices: Self = "get_services"
-    /// `getAreas()`
+    /// `config/area_registry/list`
     public static var getAreas: Self = "config/area_registry/list"
+    /// `script/config`
+    public static var scriptConfig: Self = "script/config"
 
     // MARK: - Subscription Handling
 
