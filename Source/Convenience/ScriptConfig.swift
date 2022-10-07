@@ -44,7 +44,7 @@ public struct HAScriptSubConfig: HADataDecodable {
     /// When `max` is exceeded (which is effectively 1 for `single` mode) a log message will be emitted to indicate this has happened
     public var maxExceeded: String?
     /// The sequence of actions to be performed in the script
-    public var sequence: [[String: Any]]
+    public var sequence: SequenceList
     
     /// Controls what happens when script is invoked while it is still running from one or more previous invocations
     public enum Mode: String, HADecodeTransformable {
@@ -62,7 +62,7 @@ public struct HAScriptSubConfig: HADataDecodable {
     /// - Parameter data: The data from the server
     /// - Throws: If any required keys are missing
     public init(data: HAData) throws {
-        self.init(
+        try self.init(
             alias: data.decode("alias", fallback: nil),
             icon: data.decode("icon", fallback: nil),
             description: data.decode("description", fallback: nil),
@@ -84,7 +84,17 @@ public struct HAScriptSubConfig: HADataDecodable {
     ///   - max: Controls maximum number of runs executing and/or queued up to run at a time. Only valid with modes `queued` and `parallel`
     ///   - maxExceeded: When `max` is exceeded (which is effectively 1 for `single` mode) a log message will be emitted to indicate this has happened
     ///   - sequence: The sequence of actions to be performed in the script
-    public init(alias: String?, icon: String?, description: String?, variables: [String: Any]?, mode: Mode?, max: Int?, maxExceeded: String?, sequence: [[String: Any]]) {
+    /// - Throws: When the attributes are missing any required fields
+    public init(
+        alias: String?,
+        icon: String?,
+        description: String?,
+        variables: [String: Any]?,
+        mode: Mode?,
+        max: Int?,
+        maxExceeded: String?,
+        sequence: [[String: Any]])
+    throws{
         self.alias = alias
         self.icon = icon
         self.description = description
@@ -92,6 +102,29 @@ public struct HAScriptSubConfig: HADataDecodable {
         self.mode = mode
         self.max = max
         self.maxExceeded = maxExceeded
-        self.sequence = sequence
+        self.sequence = try .init(dictionary: sequence)
+    }
+}
+
+/// The item in a sequence of a script or automation
+public struct SequenceList {
+
+    /// A dictionary representation of the individual actions
+    /// This contains all keys and actions, including those not parsed or handled otherwise
+    public var dictionary: [[String: Any]]
+    
+    /// Create with data
+    /// - Parameter data: The data from the server
+    /// - Throws: If any required keys are missing
+    public init(dictionary: [[String: Any]]) throws {
+        self.dictionary = dictionary
+    }
+
+    /// Create with given information
+    /// - Parameters:
+    ///   - dictionary: The dictionary representation of the
+    /// - Throws: When the attributes are missing any required fields, domain-specific
+    public init(domain: String, dictionary: [[String: Any]]) throws {
+        self.dictionary = dictionary
     }
 }
