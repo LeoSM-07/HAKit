@@ -98,10 +98,10 @@ internal class HAResponseControllerImpl: HAResponseController {
 
                 DispatchQueue.main.async {
                     if case let .auth(.ok(version)) = response {
-                        phase = .command(version: version)
+                        self.phase = .command(version: version)
                     }
 
-                    delegate?.responseController(self, didReceive: response)
+                    self.delegate?.responseController(self, didReceive: response)
                 }
             }
         case let .binary(data):
